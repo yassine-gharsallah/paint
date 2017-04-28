@@ -15,7 +15,9 @@
  */
 package com.google.firebase.codelab.friendlychat;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -34,6 +36,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -252,11 +255,9 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                layout_drawing.setDrawingCacheEnabled(true);
-                layout_drawing.buildDrawingCache();
-                Bitmap bitmap = Bitmap.createBitmap(layout_drawing.getDrawingCache());
 
-                mImagePainted.setImageBitmap(bitmap);
+
+             //   mImagePainted.setImageBitmap(bitmap);
 
                 FriendlyMessage friendlyMessage = new
                         FriendlyMessage(mMessageEditText.getText().toString(),
@@ -281,9 +282,30 @@ public class MainActivity extends AppCompatActivity
         mPaint.setStrokeWidth(stroke);
 
 
-        mSendButton.setOnClickListener(new View.OnClickListener() {
+        mSendImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                layout_drawing.setDrawingCacheEnabled(true);
+                layout_drawing.buildDrawingCache();
+                Bitmap bitmap = Bitmap.createBitmap(layout_drawing.getDrawingCache());
+
+
+                AlertDialog.Builder alertadd = new AlertDialog.Builder(MainActivity.this);
+                LayoutInflater factory = LayoutInflater.from(MainActivity.this);
+                final View dialogView = factory.inflate(R.layout.send_image_layout, null);
+                alertadd.setView(dialogView);
+
+                ((ImageView)dialogView.findViewById(R.id.dialog_imageview)).setImageBitmap(bitmap);
+
+
+                alertadd.setNeutralButton("Send Image", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dlg, int sumthin) {
+
+                    }
+                });
+
+                alertadd.show();
 
 
 
