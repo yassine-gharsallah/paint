@@ -41,6 +41,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -70,6 +71,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import petrov.kristiyan.colorpicker.ColorPicker;
+
+import static com.google.firebase.codelab.friendlychat.R.id.linearLayout;
 
 public class MainActivity extends AppCompatActivity
         implements GoogleApiClient.OnConnectionFailedListener {
@@ -103,6 +107,17 @@ public class MainActivity extends AppCompatActivity
     private LinearLayoutManager mLinearLayoutManager;
     private ProgressBar mProgressBar;
     private EditText mMessageEditText;
+    private ImageView mImagePainted;
+
+    private TextView mBrushplus;
+    private TextView mBrushmoins;
+
+    private TextView mColor;
+    private TextView mSendImage;
+
+
+    LinearLayout layout_drawing;
+
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
@@ -112,6 +127,10 @@ public class MainActivity extends AppCompatActivity
             mFirebaseAdapter;
     DrawingView dv ;
     private Paint mPaint;
+
+    private int  stroke = 4;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +161,14 @@ public class MainActivity extends AppCompatActivity
                 .build();
 
         // Initialize ProgressBar and RecyclerView.
+
+        mBrushplus = (TextView) findViewById(R.id.changeBrush) ;
+        mBrushmoins = (TextView) findViewById(R.id.changeBrush_moins) ;
+
+        mColor = (TextView) findViewById(R.id.changeColor) ;
+        mSendImage = (TextView) findViewById(R.id.sendImage) ;
+
+        mImagePainted = (ImageView) findViewById(R.id.image_painted);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mMessageRecyclerView = (RecyclerView) findViewById(R.id.messageRecyclerView);
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -224,6 +251,13 @@ public class MainActivity extends AppCompatActivity
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                layout_drawing.setDrawingCacheEnabled(true);
+                layout_drawing.buildDrawingCache();
+                Bitmap bitmap = Bitmap.createBitmap(layout_drawing.getDrawingCache());
+
+                mImagePainted.setImageBitmap(bitmap);
+
                 FriendlyMessage friendlyMessage = new
                         FriendlyMessage(mMessageEditText.getText().toString(),
                         mUsername,
@@ -234,7 +268,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        LinearLayout layout_drawing = (LinearLayout) findViewById(R.id.layout_drawing);
+         layout_drawing = (LinearLayout) findViewById(R.id.layout_drawing);
         dv = new DrawingView(this);
         layout_drawing.addView(dv);
         mPaint = new Paint();
@@ -244,7 +278,62 @@ public class MainActivity extends AppCompatActivity
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(4);
+        mPaint.setStrokeWidth(stroke);
+
+
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+            }
+        });
+
+        mColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ColorPicker colorPicker = new ColorPicker(MainActivity.this);
+                colorPicker.show();
+                colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+                    @Override
+                    public void onChooseColor(int position,int color) {
+                        // put code
+                        mPaint.setColor(color);
+                    }
+
+                    @Override
+                    public void onCancel(){
+                        // put code
+                    }
+                });
+
+
+
+
+            }
+        });
+
+
+        mBrushmoins.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                stroke -=4;
+                mPaint.setStrokeWidth(stroke);
+            }
+        });
+
+        mBrushplus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                stroke +=4;
+                mPaint.setStrokeWidth(stroke);
+            }
+        });
+
     }
 
     @Override

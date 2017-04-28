@@ -12,14 +12,19 @@
     tools:context="com.google.firebase.codelab.friendlychat.MainActivity">
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/layout_drawing"
         android:layout_width="match_parent"
         android:layout_height="200sp"
-        android:id="@+id/layout_drawing"></LinearLayout>
+        android:orientation="vertical"></LinearLayout>
+
+    <ImageView
+        android:id="@+id/image_painted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="240dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/messageRecyclerView"
@@ -61,5 +66,54 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"/>
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+       android:layout_marginTop="10dp"
+        >
+
+        <TextView
+            android:id="@+id/changeColor"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.33"
+            android:text="Color"
+            android:gravity="center"
+            android:textColor="#000"
+            />
+
+
+        <TextView
+            android:id="@+id/changeBrush_moins"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.33"
+            android:text="Brush-"
+            android:gravity="center"
+            android:textColor="#000"
+            />
+        <TextView
+            android:id="@+id/changeBrush"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.33"
+            android:text="Brush+"
+            android:gravity="center"
+            android:textColor="#000"
+            />
+
+        <TextView
+            android:id="@+id/sendImage"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.33"
+            android:text="Send Image"
+            android:gravity="center"
+            android:textColor="#000"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>
