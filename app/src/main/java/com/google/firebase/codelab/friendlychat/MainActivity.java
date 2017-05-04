@@ -72,6 +72,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import petrov.kristiyan.colorpicker.ColorPicker;
@@ -390,6 +391,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.random_word:
+                Toast.makeText(MainActivity.this, getaRzndomWord(),Toast.LENGTH_LONG).show();
+                return true;
             case R.id.invite_menu:
                 sendInvitation();
                 return true;
@@ -537,5 +541,18 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
     }
+
+
+    private  String  getaRzndomWord()
+    {
+        final String[] proper_noun = {"Tree", "Book", "Bird", "Sun", "House","Smartphone","Door","Arrow"};
+        Random random = new Random();
+        int index = random.nextInt(proper_noun.length);
+        System.out.println(proper_noun[index]);
+        return proper_noun[index];
+    }
+
+
+
 }
 
